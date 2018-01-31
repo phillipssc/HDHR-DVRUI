@@ -15,7 +15,7 @@ http://www.kaashoek.com/comskip/
 Transcoding: FFmpeg
 https://www.ffmpeg.org/
 
-File renaming for Plex: 
+File renaming for Plex: tvnamer
 https://github.com/dbr/tvnamer
 
 Notification for Plex: wget
@@ -32,8 +32,7 @@ The web application also shows the server stats: disk space usage on the temp, r
 
 Finally, scheduling was enhanced.   Dropdowns replace the guesswork of date time and channel selection for any show.   You can now edit an existing rule easily and, of course, add post-processing options to it.
 
-
-
+![Edit Rule](HDHomeRun DVR UI_EditRule.png)
 
 Original README:
 
