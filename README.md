@@ -32,7 +32,7 @@ The web application also shows the server stats: disk space usage on the temp, r
 
 Finally, scheduling was enhanced.   Dropdowns replace the guesswork of date time and channel selection for any show.   You can now edit an existing rule easily and, of course, add post-processing options to it.
 
-![Edit Rule](HDHR-DVRUI/HDHomeRun_DVR_UI_EditRule.png)
+![Edit Rule](HDHR-DVRUI/HDHomeRun_DVR_UI_EditRule.png) 
 
 Original README:
 
