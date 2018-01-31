@@ -1,34 +1,73 @@
-<div id='AdvancedRuleCreate' class='revealModal'>
-	<form class="edit_form" name="edit_form" onSubmit="return submitCreateRule()">
-	<div class='revealModal-header'>
-		<h4>Advanced Rule</h4>
-	</div>
-	<div class='revealModal-content'>
-		<input type="hidden" id="seriesid">
-		<ul>
-		<li><label for="seriesname"><b>Series Name:</b></label> <input type="text" id="seriesname" readonly class="AdvancedInput" style="border:0px; width: 400px;"></li>
-		<li><label for="padding"><b>Padding:</b></label>
-			Start: <input type="number" id="paddingstart" size="3" min="0" max="3600" value="30" class="AdvancedInput" > 
-			End: <input type="number" id="paddingend" size="3" min="0" max="10800" value="30" class="AdvancedInput"> seconds.</li>
-		
-		<li><label for="recordtype"><b>Recording Type:</b></label><input type="radio" name="recordtype" id="recordtype" value="all" onClick="handleRecordingType(this)" checked> Record All</li>
-		<li><label for="recordtype"><i>or</i> </label><input type="radio" name="recordtype" id="recordtype" value="recent" onClick="handleRecordingType(this)" > Record Recent Only</li>
-		<li><label for="recordtype"><i>or</i> </label><input type="radio" name="recordtype" id="recordtype" value="time" onClick="handleRecordingType(this)" > Record Specific Time
-				<input type="datetime-local" id="recordtime" class="AdvancedInput" style="display:none;"></li>
-		<li><label for="recordtype"><i>or</i> </label><input type="radio" name="recordtype" id="recordtype" value="aftertime" onClick="handleRecordingType(this)" > Record After Original Air Date
-				<input type="date" id="recordafter" class="AdvancedInput" style="display:none;"></li>
-		
-		
-		<li><label for="channel"><b>Specific Channel:</b></label><input type="text" id="channel" class="AdvancedInput" ></li>
-		</ul>
-	</div>
-        <div class='revealModal-footer'>
-                <ul class="modal_decorator">
-                        <li class='confirm_left'><a onClick="hideReveal(event,'AdvancedRuleCreate')">Cancel</a></li>
-                        <li class='confirm_right'><a onClick="submitCreateRule()">Save</a></li>
-                </ul>
-        </div>
+<div id='AdvancedRuleCreate' class='revealModal' style="display:block">
+	<form class="edit_form" name="edit_form" id="task_edit_form" onSubmit="return submitRuleForm()">
+		<input type="hidden" id="channel" value="<!-- dvr_rule_channel -->" >
+		<input type="hidden" id="seriesid" value="<!-- dvr_rule_seriesid -->">
+		<input type="hidden" id="recordtime" value="<!-- dvr_rules_datetime -->" >
+		<input type="hidden" id="handler" value="<!-- dvr_rules_handler -->" >
+		<input type="hidden" id="category" value="<!-- dvr_rule_category -->" >
+		<input type="hidden" id="archivepath" value="<!-- dvr_rule_archivepath -->" >
+		<div class='revealModal-header'>
+			<h4>Advanced Rule</h4>
+		</div>
+		<div class='revealModal-content'>
+			<ul class="scheduleoptions" <!-- dvr_schedule_options -->>
+				<li><label for="seriesname"><b>Series Name:</b></label>
+					<input type="text" id="seriesname" readonly class="AdvancedInput" style="border:0px; width: 400px;" value="<!-- dvr_rule_seriesname -->">
+				</li>
+				<li><label for="recordtype"><b>Options:</b></label>
+					<input type="radio" name="recordtype" id="recordtype" value="all" onClick="handleRecordingType(this)" <!-- dvr_rule_recordtypeallselected --> > Record All
+					<span id="typeallselected" <!-- dvr_rule_recordtypeallselopts -->><!-- dvr_rule_channels --></span>
+				</li>
+				<li><label for="recordtype"></label>
+					<input type="radio" name="recordtype" id="recordtype" value="recent" onClick="handleRecordingType(this)" <!-- dvr_rule_recordtyperecentselected --> > Record Recent Only
+					<span id="typerecentselected" <!-- dvr_rule_recordtyperecentselopts -->><!-- dvr_rule_channels --></span>
+				</li>
+				<li><label for="recordtype"></label>
+					<input type="radio" name="recordtype" id="recordtype" value="time" onClick="handleRecordingType(this)" <!-- dvr_rule_recordtypetimeselected --> > Record Specific Time
+					<span id="typetimeselected" <!-- dvr_rule_recordtypetimeselopts -->><!-- dvr_rule_schedule --></span>
+				</li>
+				<li><label for="recordtype"></label>
+					<input type="radio" name="recordtype" id="recordtype" value="aftertime" onClick="handleRecordingType(this)" <!-- dvr_rule_recordtypeaftertimeselected --> > Record After Original Air Date
+					<span id="typeaftertimeselected" <!-- dvr_rule_recordtypeaftertimeselopts -->><input type="date" id="recordafter" class="AdvancedInput" value="<!-- dvr_rules_airdate -->" >
+					<!-- dvr_rule_channels --></span>
+				</li>
+				<li><label for="padding"><b>Padding:</b></label>
+					Start: <input type="number" id="paddingstart" size="3" min="0" max="3600" class="AdvancedInput"  value="<!-- dvr_rule_startpad -->">
+					End: <input type="number" id="paddingend" size="3" min="0" max="10800" class="AdvancedInput" value="<!-- dvr_rule_endpad -->"> seconds.
+				</li>
+			</ul>
+			<ul class="comskipoptions">
+				<li><label for="comskipprofile"><b>Comskip:</b></label>
+					<!-- dvr_alt_comskip_label --> <select id="comskipprofile" name="comskipprofile" >
+						<option value="N">Keep Commercials</option>
+						<!-- dvr_comskip_options -->
+					</select>
+				</li>
+			</ul>
+			<ul class="archivebutton" <!-- dvr_schedule_options -->>
+				<li><label for="archive"><b>Archive:</b></label>
+					<input type="checkbox" id="archive" name="archive" onClick="handleSelectArchive(this)" <!-- dvr_rule_archive -->> Enabled
+				</li>
+			</ul>
+			<ul class="postprocessoptions" <!-- dvr_postprocess_options -->>
+				<li class="archiveonly"><label for="ffmpegprofile"><b></b></label>
+					Transcoding Profile <select id="ffmpegprofile" name="ffmpegprofile">
+						<!-- dvr_ffmpeg_options -->
+					</select>
+				</li>
+			<li class="archiveonly"><label for="deleteoriginal"><b></b></label>
+					<input type="checkbox" id="deleteoriginal" name="deleteoriginal" <!-- dvr_rule_delete -->> Delete Original
+				</li>
+				<li class="archiveonly"><label for="overwritearchive"><b></b></label>
+					<input type="checkbox" id="overwritearchive" name="overwritearchive" <!-- dvr_rule_overwrite -->> Overwrite Archive
+				</li>
+			</ul>
+		</div>
+    <div class='revealModal-footer'>
+            <ul class="modal_decorator">
+                    <li class='confirm_left'><a onClick="hideReveal(event,'AdvancedRuleCreate')">Cancel</a></li>
+                    <li class='confirm_right'><a onClick="submitRuleForm()">Save</a></li>
+            </ul>
+    </div>
 	</form>
-
-
 </div>

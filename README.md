@@ -1,5 +1,41 @@
 # *HDHR-DVRUI*
-PHP Server Application for managing your home networks HDHomeRun DVR(s) from SiliconDust
+PHP Server Application for managing your home networks HDHomeRun DVR(s) from SiliconDust including post-processing and enhanced scheduling
+
+This fork was done to make changes specific to the fine app by [demonrik](https://github.com/demonrik) and [avandeputte](https://github.com/avandeputte) that fell outside of the scope of the original project.
+My setup uses a powerful Ubuntu server (8 core Xeon 2 GB VM) to record, post-process, archive to a NAS and notify Plex of the new video.
+The UI has been modified to allow for post processing of the video content including commercial removal, archiving, transcoding and cleanup of the incoming video content.
+The following was installed to accomodate this functionality:
+
+To monitor the file system and trigger a script when a file opened for writing has closed: iWatch (not Apple)
+http://iwatch.sourceforge.net/index.html
+
+Commercial removal: comskip
+http://www.kaashoek.com/comskip/
+
+Transcoding: FFmpeg
+https://www.ffmpeg.org/
+
+File renaming for Plex: 
+https://github.com/dbr/tvnamer
+
+Notification for Plex: wget
+
+Four script files in app/bin are to be placed in /usr/bin and the configuration file (postprocess.conf) in /etc
+
+I rotate my local recordings using the postprocessclean.sh routine run every half hour by cron.   The script deletes videos older than a week, if I want to keep them longer I acrchive them.
+The postprocesswatch.sh script watches for and kills hung ffmpeg processes.   It is configurable through /etc/postprocess.conf
+The postprocessvars.sh script is used by the web application to read variables from /etc/postprocess.conf.
+The postprocess.sh script is the workhorse that does the post-processing.
+
+The web application, for the most part, sets the iWatch configuration file /etc/iwatch/iwatch.xml to watch over the various directories and act on files after they are done being written.  This invokes the postprocess.sh script using the desired parameters to do the task.   The web app also will invoke the postprocess.sh script directly on the existing recordings.
+The web application also shows the server stats: disk space usage on the temp, recording and plex mounts as well as the server load.
+
+Finally, scheduling was enhanced.   Dropdowns replace the guesswork of date time and channel selection for any show.   You can now edit an existing rule easily and, of course, add post-processing options to it.
+
+
+
+
+Original README:
 
 **Release binaries are [here](https://github.com/demonrik/HDHR-DVRUI/releases)**
 

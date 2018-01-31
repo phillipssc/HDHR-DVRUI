@@ -21,7 +21,7 @@
 
 		//display
 		$tab->add(TabInnerHtml::getBehavior("rules_box", $htmlStr));
-
+		$tab->add(TabInnerHtml::getBehavior("edittask", ""));
 		return $tab->getString();
 	}
 	function changeRulePriority($ruleid, $changeVal){
@@ -82,29 +82,6 @@
 		return $tab->getString();
 	}
 
-	function createRule($seriesid, $recentonly, $start, $end, $channel, $recordtime, $recordafter){
-		// prep
-		ob_start();
-		$tab = new TinyAjaxBehavior();
-
-		// poke each record engine
-		$engines =  $hdhr->engine_count();
-		for ($i=0; $i < $engines; $i++) {
-			$hdhr->poke_engine($i);
-		}
-
-		//create output
-		$htmlStr = getRecordingRules("");
-
-		//get data	
-		$result = ob_get_contents();
-		ob_end_clean();
-	
-		//display
-		$tab->add(TabInnerHtml::getBehavior("rules_box", $htmlStr));
-		return $tab->getString();
-	} 
-
 	function getRecordingRules($seriesid) {
 		$rulesStr = '';
 		
@@ -136,6 +113,7 @@
 			$rulesEntry = str_replace('<!-- dvr_reccount -->',$reccount,$rulesEntry);
 			$rulesEntry = str_replace('<!-- dvr_rules_recent -->',$hdhrRules->getRuleRecent($i),$rulesEntry);
 			$rulesEntry = str_replace('<!-- dvr_series_id -->',$hdhrRules->getRuleSeriesID($i),$rulesEntry);
+			$rulesEntry = str_replace('<!-- dvr_rules_category -->',$hdhrRules->getRuleFilter($i)[0] ,$rulesEntry);
 			if(strlen($hdhrRules->getRuleAfterAirDate($i)) > 5 ){
 				$rulesEntry = str_replace('<!-- dvr_rules_airdate -->',", After Original Airdate: " . $hdhrRules->getRuleAfterAirDate($i),$rulesEntry);
 			}

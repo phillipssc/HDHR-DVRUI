@@ -481,6 +481,7 @@ ul.sortby li a {
   padding: 0;
   font-style: normal;
 }
+.archive,
 .play,
 .record,
 .delete,
@@ -505,6 +506,9 @@ ul.sortby li a {
 }
 .upcoming {
   background-color: #0000FF;
+}
+.archive {
+  background-color: blue;
 }
 .settings {
   position: relative;
@@ -551,7 +555,7 @@ ul.sortby li a {
   z-index: 1;
   background-color: #000000;
   background-color: rgba(0,0,0,0.8);
-  padding-top: 15%;
+  padding-top: 10%;
   color: black;
   left: 0;
   top: 0;
@@ -562,7 +566,7 @@ ul.sortby li a {
 .revealModal-content {
   background-color: #EEE;
   width: 80%;
-  min-height: 162px;
+  min-height: 150px;
   padding: 20px;
   margin: auto;
 }
@@ -664,4 +668,13 @@ div.datepicker {
   -moz-border-radius: 5px 5px 0px 0px;
   -webkit-border-radius: 5px 5px 0px 0px;
   padding: 4px 0 4px 0;
+}
+.processListBox {
+    display: block;
+    float: left;
+    margin-right: 4px;
+}
+#diskspace {
+  float: right;
+  padding: 15px 20px 0 0;
 }

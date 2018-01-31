@@ -51,6 +51,7 @@ class DVRUI_Rules {
 	private $recording_Team = 'TeamOnly';
 	private $recording_Airdate = 'AfterOriginalAirdateOnly';
 	private $recording_DateTimeOnly = 'DateTimeOnly';
+	private $recording_Filter = 'Filter';
 
 	
 	private $recordingCmd_delete = '&Cmd=delete';
@@ -79,6 +80,12 @@ class DVRUI_Rules {
 		}
 	}
 
+	public function processRuleID($recID){
+		$rules_info = getJsonFromUrl($this->rulesURL . $this->auth . '&RecordingRuleID=' . $recID);
+		for ($i = 0; $i < count($rules_info); $i++) {
+			$this->processRule($rules_info[$i]);
+		}
+	}
 	private function processRule($rule) {
 		$recID = $rule[$this->recording_RecID];
 		$seriesID = $rule[$this->recording_SeriesID];
@@ -93,7 +100,7 @@ class DVRUI_Rules {
 		$airdate = '';
 		$synopsis = "";
 		$image = "";
-	
+		$filter = "";
 		if (array_key_exists($this->recording_ImageURL,$rule)){
 			$image = $rule[$this->recording_ImageURL];
 		}
@@ -107,7 +114,7 @@ class DVRUI_Rules {
 			$dateTimeOnly = $rule[$this->recording_DateTimeOnly];
 		}
 		if (array_key_exists($this->recording_Channel,$rule)) {
-			$channelOnly = 'Channel' . $rule[$this->recording_Channel];
+			$channelOnly = $rule[$this->recording_Channel];
 		}
 		if (array_key_exists($this->recording_Team,$rule)) {
 			$teamOnly = $rule[$this->recording_Team];
@@ -118,10 +125,14 @@ class DVRUI_Rules {
 		if (array_key_exists($this->recording_Airdate,$rule)) {
 			$airdate = $rule[$this->recording_Airdate];
 		}
-			
+		if (array_key_exists($this->recording_Filter,$rule)){
+			$filter = $rule[$this->recording_Filter];
+		}
+
 		$this->rules[] = array($this->recording_RecID => $recID,
 				$this->recording_SeriesID => $seriesID,
 				$this->recording_ImageURL => $image,
+				$this->recording_Filter => $filter,
 				$this->recording_Title => $title,
 				$this->recording_Synopsis => $synopsis,
 				$this->recording_StartPad => $startPad,
@@ -158,6 +169,14 @@ class DVRUI_Rules {
 		}
 	}
 
+	public function getRuleDateTimeRaw($pos) {
+		if(strlen($this->rules[$pos][$this->recording_DateTimeOnly]) > 5){
+			return $this->rules[$pos][$this->recording_DateTimeOnly];
+		}else{
+			return 0;
+		}
+	}
+
 	public function getRuleAfterAirDate($pos) {
 		if(strlen($this->rules[$pos][$this->recording_Airdate]) > 5){
 			return date("m/d/Y", $this->rules[$pos][$this->recording_Airdate]);
@@ -185,6 +204,10 @@ class DVRUI_Rules {
 		return $this->rules[$pos][$this->recording_ImageURL];
 	}
 	
+	public function getRuleFilter($pos) {
+		return $this->rules[$pos][$this->recording_Filter];
+	}
+
 	public function getRuleSynopsis($pos) {
 		return $this->rules[$pos][$this->recording_Synopsis];
 	}
@@ -215,8 +238,14 @@ class DVRUI_Rules {
 		$deleteURL = $this->rulesURL . $this->auth;
 		$deleteURL .= "&Cmd=delete&RecordingRuleID=" . $id;
 		getJsonFromUrl($deleteURL);
-
 	}
+
+	public function getRule($id){
+		$ruleURL = $this->rulesURL . $this->auth;
+		$ruleURL .= "&RecordingRuleID=" . $id;
+		getJsonFromUrl($ruleURL);
+	}
+
 	public function changeRulePriority($id, $priority){
 		$URL = $this->rulesURL . $this->auth;
 		$URL .= "&Cmd=change&RecordingRuleID=" . $id;

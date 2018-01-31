@@ -13,6 +13,7 @@ class DVRUI_Search {
 	private $search_ChannelImageURL = 'ChannelImageURL';
 	private $search_RecordingRule = 'RecordingRule';
 	private $search_OriginalAirDate = 'OriginalAirdate';
+	private $search_Filter = 'Filter';
 	private $searchResults = array();
 	
 	private $search_list = array();
@@ -68,6 +69,10 @@ class DVRUI_Search {
 				$recordingRule = $search_info[$i][$this->search_RecordingRule];
 			}
 			
+			if (array_key_exists($this->search_Filter,$search_info[$i])) {
+				$searchFilter = $search_info[$i][$this->search_Filter];
+			}
+
 			$this->searchResults[] = array(
 					$this->search_SeriesID => $seriesID,
 					$this->search_ImageURL => $image,
@@ -77,8 +82,9 @@ class DVRUI_Search {
 					$this->search_ChannelName => $channelName,
 					$this->search_ChannelImageURL => $channelImageURL,
 					$this->search_OriginalAirDate => $originalAirDate,
-					$this->search_RecordingRule => $recordingRule	
-		
+					$this->search_RecordingRule => $recordingRule,	
+					$this->search_RecordingRule => $recordingRule,	
+					$this->search_Filter => $searchFilter
 				);
 		}
 		
@@ -134,6 +140,9 @@ class DVRUI_Search {
 	}
 	public function getRecordAllURL($pos) {
 		return "api.php?api=rules&cmd=create&seriesid=" . $this->searchResults[$pos][$this->search_SeriesID] . '&recentonly=0';
+	}
+	public function getSearchFilter($pos) {
+		return $this->searchResults[$pos][$this->search_Filter];
 	}
 }
 ?>

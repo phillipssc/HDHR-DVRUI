@@ -24,6 +24,7 @@
 	
 		//display
 		$tab->add(TabInnerHtml::getBehavior("search_box", $htmlStr));
+		$tab->add(TabInnerHtml::getBehavior("edittask", ""));
 		if ($result != '' && $result != NULL)
 			$tab->add(TabInnerHtml::getBehavior("statusMessage", $result));
 		else
@@ -59,37 +60,6 @@
 		return $tab->getString();
 	}
 
-	function createRuleFromSearch($searchString, $seriesid, $recentonly, $start, $end, $channel, $recordtime, $recordafter){
-		// prep
-		ob_start();
-		$tab = new TinyAjaxBehavior();
-
-		// create the rule
-		$hdhr = new DVRUI_HDHRjson();
-		$hdhrRules = new DVRUI_Rules($hdhr);
-		$hdhrRules->createRule($seriesid, $recentonly, $start, $end, $channel, $recordtime, $recordafter);	
-
-		// poke each record engine to reload rules from my.hdhomerun.com
-		$engines =  $hdhr->engine_count();
-		for ($i=0; $i < $engines; $i++) {
-			$hdhr->poke_engine($i);
-		}
-		// clear cached episodes
-		$hdhrUpcoming = new DVRUI_Upcoming($hdhr);
-		$hdhrUpcoming->deleteCachedUpcoming($seriesid);
-
-		//create output
-		$htmlStr = getSearchResults($searchString);
-
-		//get data
-		$result = ob_get_contents();
-		ob_end_clean();
-
-		//display
-		$tab->add(TabInnerHtml::getBehavior("search_box", $htmlStr));
-		return $tab->getString();
-	}
-
 	function getSearchResults($searchString) {
 		$searchStr = '';
 		$hdhr = new DVRUI_HDHRjson();
@@ -106,7 +76,8 @@
 			$searchEntry = str_replace('<!-- dvr_search_channelNumber -->',$hdhrSearchResults->getSearchResultChannelNumber($i),$searchEntry);
 			$searchEntry = str_replace('<!-- dvr_search_channelName -->',$hdhrSearchResults->getSearchResultChannelName($i),$searchEntry);
 			$searchEntry = str_replace('<!-- dvr_search_originalAirDate -->',$hdhrSearchResults->getSearchResultOriginalAirDate($i),$searchEntry);
-
+			$searchEntry = str_replace('<!-- dvr_search_recordingid -->',$hdhrSearchResults->getSearchResultRecordingRules($i),$searchEntry);
+			$searchEntry = str_replace('<!-- dvr_search_filter -->',$hdhrSearchResults->getSearchFilter($i)[0],$searchEntry);
 			
 			$actionLinks = file_get_contents('style/series_actions.html');
 			$actionLinks = str_replace('<!-- dvr_record_recent -->',$hdhrSearchResults->getRecordRecentURL($i),$actionLinks);
@@ -176,7 +147,7 @@
 			$searchData .= $searchEntry;
 		}
 		$searchList = file_get_contents('style/search_list.html');
-		$searchList .= file_get_contents('style/advancedrule.html');
+		//$searchList .= file_get_contents('style/advancedrule.html');
 		$searchList = str_replace('<!-- dvr_search_count -->','Found: ' . $numResults . ' Results<br/>',$searchList);
 		$searchList = str_replace('<!-- dvr_search_list -->',$searchData,$searchList);
 		

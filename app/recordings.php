@@ -37,6 +37,7 @@
 
 		//display
 		$tab->add(TabInnerHtml::getBehavior("recordings_box", $htmlStr));
+		$tab->add(TabInnerHtml::getBehavior("edittask", ""));
 		return $tab->getString();
 	}
 
@@ -79,6 +80,7 @@
 		for ($i=0; $i < $numRecordings; $i++) {
 			$recordingsEntry = file_get_contents('style/recordings_entry.html');
 			$recordingsEntry = str_replace('<!-- dvr_recordings_id -->',$hdhrRecordings->getRecordingID($i),$recordingsEntry);
+			$recordingsEntry = str_replace('<!-- dvr_recordings_category -->',$hdhrRecordings->getCategory($i),$recordingsEntry);
 			$recordingsEntry = str_replace('<!-- dvr_series_id -->',$hdhrRecordings->getSeriesID($i),$recordingsEntry);
 			$recordingsEntry = str_replace('<!-- dvr_recordings_image -->',$hdhrRecordings->getRecordingImage($i),$recordingsEntry);
 			$recordingsEntry = str_replace('<!-- dvr_recordings_episode -->',$hdhrRecordings->getEpisodeNumber($i),$recordingsEntry);

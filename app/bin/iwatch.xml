@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE config SYSTEM "/etc/iwatch/iwatch.dtd" >
+
+<config charset="utf-8">
+  <guard email="iwatch@localhost" name="iWatch"/>
+  <watchlist>
+    <title>New Video Data Found. Encoding started.</title>
+    <contactpoint email="sean.c.phillips@gmail.com" name="The Dude"/>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=Y ffmpeg=High %f \;" events="move,create,close_write">/home/sean/HDHomeRun/dropshow</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=Y ffmpeg=High %f \;" events="move,create,close_write">/home/sean/HDHomeRun/dropmovie</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Fake News With Ted Nelms</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The X-Files</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Workaholics</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Simpsons</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Orville</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=Y ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Futurama</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Guest Book</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Walking Dead</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Bob's Burgers</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/South Park</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip=N archive=Y delete=N rebuild=Y ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/It's Always Sunny in Philadelphia</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Chappelle's Show</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=N delete=N rebuild=N ffmpeg='Normal' %f \;" events="close_write">/home/sean/HDHomeRun/The Late Show With Stephen Colbert</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=N delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Full Frontal With Samantha Bee</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Star Trek</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=Y ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Detour</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=N delete=N rebuild=N ffmpeg='Normal' %f \;" events="close_write">/home/sean/HDHomeRun/Tosh.0</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/The Twilight Zone</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Search Party</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Taxi</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Movies</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='High Quality' %f \;" events="close_write">/home/sean/HDHomeRun/Archer</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Experimental' archive=Y delete=N rebuild=Y ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/That '70s Show</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Superbad</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=N delete=N rebuild=N ffmpeg='Normal' %f \;" events="close_write">/home/sean/HDHomeRun/Sporting Events</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=N delete=N rebuild=N ffmpeg='Normal' %f \;" events="close_write">/home/sean/HDHomeRun/Slutever</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Corporate</path>
+    <path type="single" alert="off" exec="/usr/bin/postprocess.sh comskip='Main' archive=Y delete=N rebuild=N ffmpeg='Highest' %f \;" events="close_write">/home/sean/HDHomeRun/Another Period</path>
+  </watchlist>
+</config>

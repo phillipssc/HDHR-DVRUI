@@ -13,6 +13,7 @@
 	require_once("theme.php");
 	require_once("upcoming.php");
 	require_once("search.php");
+	require_once("rule.php");
 	/* Prepare Ajax */
 	$ajax = new TinyAjax();
 	$ajax->setRequestType("POST");    // Change request-type from GET to POST
@@ -33,7 +34,9 @@
 	$ajax->exportFunction("deleteRuleFromSearch","searchstring, id");
 	$ajax->exportFunction("createQuickRuleFromSearch","searchString, seriesid, recentonly");
 	$ajax->exportFunction("createRuleFromSearch","searchString, seriesid, recentonly, start, end, channel, recordtime, recordafter");
-
+	$ajax->exportFunction("openCreateRuleForm", "ruleid, seriesid, seriesname, subtitle, category, handler");
+	$ajax->exportFunction("createRulePostProcess","handler, seriestitle, seriessubtitle, seriesid, recentonly, start, end, channel, recordtime, recordafter, comskip, archive, delete, rebuild, ffmpeg");
+	$ajax->exportFunction("getServerStats","");
 	/* GO */
 	$ajax->process(); // Process our callback
 
