@@ -1,6 +1,8 @@
 # *HDHR-DVRUI*
 PHP Server Application for managing your home networks HDHomeRun DVR(s) from SiliconDust including post-processing and enhanced scheduling
 
+![Edit Rule](HDHomeRun_DVR_UI_EditRule.png) 
+
 This fork was done to make changes specific to the fine app by [demonrik](https://github.com/demonrik) and [avandeputte](https://github.com/avandeputte) that fell outside of the scope of the original project.
 My setup uses a powerful Ubuntu server (8 core Xeon 2 GB VM) to record, post-process, archive to a NAS and notify Plex of the new video.
 The UI has been modified to allow for post processing of the video content including commercial removal, archiving, transcoding and cleanup of the incoming video content.
@@ -32,7 +34,6 @@ The web application also shows the server stats: disk space usage on the temp, r
 
 Finally, scheduling was enhanced.   Dropdowns replace the guesswork of date time and channel selection for any show.   You can now edit an existing rule easily and, of course, add post-processing options to it.
 
-![Edit Rule](HDHomeRun_DVR_UI_EditRule.png) 
 
 Original README:
 
