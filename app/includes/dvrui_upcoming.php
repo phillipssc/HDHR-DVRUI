@@ -14,7 +14,7 @@ class DVRUI_Upcoming {
 	private $epGuideURL =  DVRUI_Vars::DVRUI_apiurl . 'api/episodes?';
 	private $epGuideURL_paramAuth = 'DeviceAuth=';
 	private $epGuideURL_paramSeries = '&SeriesID=';
-	
+
 	private $epData_SeriesID = 'SeriesID';
 	private $epData_RecordingRule = 'RecordingRule';
 	private $epData_ProgramID = 'ProgramID';
@@ -29,7 +29,8 @@ class DVRUI_Upcoming {
 	private $epData_ChannelImageURL = 'ChannelImageURL';
 	private $epData_ChannelName = 'ChannelName';
 	private $epData_ChannelNumber = 'ChannelNumber';
-	private $cachesecs = 3600;	
+	private $epData_Filter = 'Filter';
+	private $cachesecs = 3600;
 	private	$upcoming_list = array();
 	private	$series_list = array();
 	private $auth = '';
@@ -61,7 +62,7 @@ class DVRUI_Upcoming {
 			$this->epData_Title => $seriesID);
 		$this->processNext(0);
 	}
-	
+
 	private function extractEpisodeInfo($episode){
 		$programID = '';
 		$title = '';
@@ -76,6 +77,7 @@ class DVRUI_Upcoming {
 		$channelName = '';
 		$channelNumber = '';
 		$originalAirDate = '';
+		$filter = '';
 
 		$recordingRule = $episode[$this->epData_RecordingRule];
 
@@ -112,6 +114,7 @@ class DVRUI_Upcoming {
 		if (array_key_exists($this->epData_ImageURL,$episode)){
 			$imageURL = $episode[$this->epData_ImageURL];
 		}
+
 		$this->upcoming_list[] = array(
 			$this->epData_ProgramID => $programID,
 			$this->epData_Title => $title,
@@ -126,7 +129,7 @@ class DVRUI_Upcoming {
 			$this->epData_ChannelNumber => $channelNumber,
 			$this->epData_RecordingRule => $recordingRule);
 	}
-	
+
 	public function getSeriesCount() {
 		return count($this->series_list);
 	}
@@ -136,20 +139,20 @@ class DVRUI_Upcoming {
 	}
 
 	public function deleteCachedUpcoming($seriesid){
-		$seriesURL = $this->epGuideURL . 
-			$this->epGuideURL_paramAuth . 
-			$this->auth . 
+		$seriesURL = $this->epGuideURL .
+			$this->epGuideURL_paramAuth .
+			$this->auth .
 			$this->epGuideURL_paramSeries .
 			$seriesid;
 		clearCacheFile($seriesURL);
 
 
-	}	
+	}
 	public function processNext($pos) {
 		if (count($this->series_list) > 0) {
-			$seriesURL = $this->epGuideURL . 
-						$this->epGuideURL_paramAuth . 
-						$this->auth . 
+			$seriesURL = $this->epGuideURL .
+						$this->epGuideURL_paramAuth .
+						$this->auth .
 						$this->epGuideURL_paramSeries .
 						$this->series_list[$pos][$this->epData_SeriesID];
 
@@ -162,7 +165,7 @@ class DVRUI_Upcoming {
 			}
 		}
 	}
-	
+
 	public function sortUpcomingByDate(){
 		usort($this->upcoming_list, function ($a, $b) {
 			if ($a[$this->epData_StartTime] == $b[$this->epData_StartTime]) {
@@ -174,7 +177,7 @@ class DVRUI_Upcoming {
 		});
 		return;
 	}
-	
+
 	public function sortUpcomingByTitle(){
 		usort($this->upcoming_list, function ($a, $b) {
 			if ($a[$this->epData_Title] == $b[$this->epData_Title]) {
@@ -199,7 +202,7 @@ class DVRUI_Upcoming {
 		}
 		return $epcount;
 	}
-	
+
 	public function getTitle($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return $this->upcoming_list[$pos][$this->epData_Title];
@@ -214,7 +217,7 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
 	public function getEpTitle($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return $this->upcoming_list[$pos][$this->epData_EpisodeTitle];
@@ -229,7 +232,7 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
 	public function getEpStartShort($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return date('D M d',$this->upcoming_list[$pos][$this->epData_StartTime]);
@@ -245,7 +248,7 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
 	public function getEpStartRaw($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return $this->upcoming_list[$pos][$this->epData_StartTime];
@@ -261,7 +264,7 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
 	public function getEpChannelNum($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return $this->upcoming_list[$pos][$this->epData_ChannelNumber];
@@ -269,10 +272,18 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
 	public function getEpChannelName($pos) {
 		if ($pos < count($this->upcoming_list)) {
 			return $this->upcoming_list[$pos][$this->epData_ChannelName];
+		} else {
+			return '';
+		}
+	}
+
+	public function getRecordingRule($pos) {
+		if ($pos < count($this->upcoming_list)) {
+			return $this->upcoming_list[$pos][$this->epData_RecordingRule];
 		} else {
 			return '';
 		}
@@ -293,6 +304,22 @@ class DVRUI_Upcoming {
 			return '';
 		}
 	}
-	
+
+	public function getEpFilter($pos) {
+		if ($pos < count($this->upcoming_list)) {
+			return $this->upcoming_list[$pos][$this->epData_Filter];
+		} else {
+			return '';
+		}
+	}
+
+	public function getProgramID($pos) {
+		if ($pos < count($this->upcoming_list)) {
+			return $this->upcoming_list[$pos][$this->epData_ProgramID];
+		} else {
+			return '';
+		}
+	}
+
 }
 ?>

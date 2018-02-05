@@ -15,19 +15,19 @@
 		<input type="hidden" name="title" value="<!-- dvr_recordings_title -->">
 		<input type="hidden" name="channels" value="<!-- dvr_recordings_chnumber -->">
 		<input type="hidden" name="cname" value="<!-- dvr_recordings_chname -->">
-		<input type="hidden" name="datetime" value="<!-- dvr_recordings_start -->">
+		<input type="hidden" name="datetime" value="<!-- dvr_recordings_datetime -->">
 		<input type="hidden" name="airdate" value="<!-- dvr_recordings_originaldate -->">
 		<input type="hidden" name="episode" value="<!-- dvr_recordings_episode -->">
 		<input type="hidden" name="show_title" value="<!-- dvr_recordings_show -->">
 		<input type="hidden" name="category" value="<!-- dvr_recordings_category -->">
-		<input type="hidden" name="archivebutton_id" value="button_rec<!-- dvr_recordings_id -->')">
+		<input type="hidden" name="handler" value="recordings">
 
 		<p class="actions">
 			<a href="<!-- dvr_recordings_play -->" class="play">Play</a>
 			<a onClick="RecordingDeleteReveal(event,'<!-- dvr_recordings_id -->',false);" class="delete">Delete</a>
 			<a onClick="RecordingDeleteReveal(event,'<!-- dvr_recordings_id -->',true);" class="delete">ReRecord</a>
 			<!-- postprocess - force archive -->
-			<a title="<!-- dvr_recordings_title -->" class="archive" id="button_rec<!-- dvr_recordings_id -->')" onclick="openNewCreateRuleForm('rec<!-- dvr_recordings_id -->','recordings')">Archive</a>
+			<a title="<!-- dvr_recordings_title -->" class="archive" id="button_rec<!-- dvr_recordings_id -->')" onclick="openNewCreateRuleForm('rec<!-- dvr_recordings_id -->')">Archive</a>
 		</p>
 	</form>
 </div>

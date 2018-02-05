@@ -58,8 +58,8 @@ br.clearfix {
 }
 .series_img {
   float: left;
-  max-height: 150px;
-  max-width: 200px;
+  max-height: 165px;
+  max-width: 220px;
 }
 .series_img_lrg {
   float: left;
@@ -253,8 +253,9 @@ a.settings_page {
 .rule_entry {
   border-top: solid 2px #393;
   background: #DDDDDD;
-  height: 150px;
+  height: 165px;
   position: relative;
+  overflow-y: auto;
 }
 .rule_entry h4 {
   color: #000000;
@@ -321,7 +322,7 @@ a.settings_page {
 .recording_entry {
   border-top: solid 2px #393;
   background: #DDDDDD;
-  height: 150px;
+  height: 165px;
   position: relative;
 }
 .recording_entry h4 {
@@ -389,7 +390,7 @@ ul.sortby li a {
 .upcoming_entry {
   border-top: solid 2px #393;
   background: #DDDDDD;
-  height: 150px;
+  height: 165px;
   position: relative;
 }
 .upcoming_entry h4 {
@@ -401,7 +402,7 @@ ul.sortby li a {
   font-style: italic;
   color: #000000;
   font-size: 0.75em;
-  margin-left: 200px;
+  margin-left: 220px;
 }
 #search_page {
   position: relative;
@@ -427,7 +428,7 @@ ul.sortby li a {
 .search_entry {
   border-top: solid 2px #393;
   background: #DDDDDD;
-  height: 150px;
+  height: 165px;
   position: relative;
   overflow-y: auto;
 }
@@ -677,4 +678,11 @@ div.datepicker {
 #diskspace {
   float: right;
   padding: 15px 20px 0 0;
+}
+p.synopsis {
+    height: 29px;
+    overflow-y: scroll;
+}
+p.archivesettings {
+    height: 15px;
 }

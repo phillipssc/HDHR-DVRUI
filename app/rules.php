@@ -6,7 +6,7 @@
 	require_once("includes/dvrui_rules.php");
 	require_once("includes/dvrui_recordings.php");
 	require_once("includes/dvrui_upcoming.php");
-	
+
 	function openRulesPage($seriesid) {
 		// prep
 		ob_start();
@@ -58,12 +58,12 @@
 		// prep
 		ob_start();
 		$tab = new TinyAjaxBehavior();
-		
+
 		// delete the rule
 		$hdhr = new DVRUI_HDHRjson();
 		$hdhrRules = new DVRUI_Rules($hdhr);
 		$hdhrRules->deleteRule($id);
-	
+
 		// poke each record engine
 		$engines =  $hdhr->engine_count();
 		for ($i=0; $i < $engines; $i++) {
@@ -73,7 +73,7 @@
 		//create output
 		$htmlStr = getRecordingRules($seriesid);
 
-		//get data	
+		//get data
 		$result = ob_get_contents();
 		ob_end_clean();
 
@@ -83,17 +83,19 @@
 	}
 
 	function getRecordingRules($seriesid) {
+		$CHECKED_YES = "checked";
+	  $CHECKED_NO = "";
 		$rulesStr = '';
-		
+
 		// Discover Recording Rules
 		$hdhr = new DVRUI_HDHRjson();
 		$hdhrRules = new DVRUI_Rules($hdhr);
 		$hdhrRecordings = new DVRUI_Recordings($hdhr);
 		if(strlen($seriesid) > 3){
 			$hdhrRules->processRuleforSeries($seriesid);
-		}else{	
+		}else{
 			$hdhrRules->processAllRules();
-		}	
+		}
 		$hdhrRecordings->processAllRecordings($hdhr);
 		$numRules = $hdhrRules->getRuleCount();
 		$rulesData = '';
@@ -120,8 +122,13 @@
 			if(strlen($hdhrRules->getRuleDateTime($i)) > 5 ){
 				$rulesEntry = str_replace('<!-- dvr_rules_datetime -->',", Record Time: " . $hdhrRules->getRuleDateTime($i),$rulesEntry);
 			}
-		
-			// get upcoming count	
+
+			$rulesEntry = str_replace('<!-- dvr_comskip_option -->', getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "comskip"), $rulesEntry);
+		  if ( getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "archive") == 'Y' ) {
+		    $rulesEntry = str_replace('<!-- dvr_ffmpeg_option -->', "FFmpeg Config: ". getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "ffmpeg"), $rulesEntry);
+		  }
+
+			// get upcoming count
 			$upcoming = new DVRUI_Upcoming($hdhr);
 			$upcoming->initBySeries($hdhrRules->getRuleSeriesID($i));
 			$upcomingcount = $upcoming->getUpcomingCount();
@@ -140,7 +147,7 @@
 
 		$rulesList = file_get_contents('style/rules_list.html');
 
-		
+
 		$rulesList = str_replace('<!-- dvr_rules_count -->','Found: ' . $numRules . ' Rules.  ',$rulesList);
 		$rulesList = str_replace('<!-- dvr_rules_list -->',$rulesData,$rulesList);
 		$rulesList .= file_get_contents('style/ruledeletereveal.html');

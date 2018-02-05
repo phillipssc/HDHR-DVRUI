@@ -2,7 +2,7 @@
 require_once("includes/postprocess.php");
 require_once("includes/dvrui_schedule.php");
 
-function openCreateRuleForm($task_ruleid, $task_seriesid, $task_seriesname, $task_subtitle, $category, $handler){
+function openCreateRuleForm($task_ruleid, $task_seriesid, $task_seriesname, $task_subtitle, $task_datetime, $task_channel, $category, $handler){
   // prep
   ob_start();
   $tab = new TinyAjaxBehavior();
@@ -17,7 +17,7 @@ function openCreateRuleForm($task_ruleid, $task_seriesid, $task_seriesname, $tas
   $SHOWN_NO = 'style="display:none;"';
 
   // create a default template
-  class DVRUI_Taskx
+  class DVRUI_Task
   {
     public $ruleid = "";
     public $seriesid = "";
@@ -47,7 +47,7 @@ function openCreateRuleForm($task_ruleid, $task_seriesid, $task_seriesname, $tas
   }
 
   // change to the given/default values
-  $task = new DVRUI_Taskx;
+  $task = new DVRUI_Task;
   $task->ruleid = $task_ruleid;
   $task->seriesid = $task_seriesid;
   $task->seriesname = $task_seriesname;
@@ -107,6 +107,14 @@ function openCreateRuleForm($task_ruleid, $task_seriesid, $task_seriesname, $tas
       $task->recordtypeallselected = $CHECKED_YES;
       $task->recordtypeallselopts  = $SHOWN_YES;
     }
+  }
+  else if ( $task_datetime != "" || $task_channel != "" ) {
+    $task->datetimeRaw = $task_datetime;
+    $task->channels = $task_channel;
+    $task->recordtypeallselected = $CHECKED_NO;
+    $task->recordtypeallselopts  = $SHOWN_NO;
+    $task->recordtypetimeselected = $CHECKED_YES;
+    $task->recordtypetimeselopts  = $SHOWN_YES;
   }
 
   // do some substitutions...
@@ -212,6 +220,7 @@ function getFfmpegOptions($task){
   }
   return $ffmpegoption;
 }
+
 function getcheckboxstate($task,$checkboxname){
   $CHECKED_YES = "checked";
   $CHECKED_NO = "";
@@ -282,8 +291,12 @@ function getSeriesUpcomingListbox($task) {
     $entry .= $upcoming->getEpChannelName($i);
     $entry .= '(';
     $entry .= $upcoming->getEpChannelNum($i);
-    $entry .= ') - ';
+    $entry .= ') ';
     $entry .= $upcoming->getEpStart($i);
+    if ( $upcoming->getEpNum($i) != '' || $upcoming->getEpTitle($i) != '' ) $entry .= ' - ';
+    if ( $upcoming->getEpNum($i) != '' ) $entry .= $upcoming->getEpNum($i);
+    if ( $upcoming->getEpNum($i) != '' && $upcoming->getEpTitle($i) != '' ) $entry .= ' ';
+    if ( $upcoming->getEpTitle($i) != '' ) $entry .= $upcoming->getEpTitle($i);
     $entry .= '</option>';
     $htmlStr .= $entry;
   }

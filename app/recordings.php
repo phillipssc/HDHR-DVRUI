@@ -13,7 +13,7 @@
 		}
 		return $sortby;
 	}
-	
+
 	function openRecordingsPage($seriesid) {
 		// prep
 		ob_start();
@@ -26,7 +26,7 @@
 			$hdhrRecordings->processSeriesRecordings($hdhr, $seriesid);
 		}else{
 			$hdhrRecordings->processAllRecordings($hdhr);
-		}		
+		}
 		$sortby = getSort();
 		$hdhrRecordings->sortRecordings($sortby);
 		$numRecordings = $hdhrRecordings->getRecordingCount();
@@ -53,14 +53,14 @@
 		$hdhrDel = new DVRUI_Recordings($hdhr);
 		$hdhrDel->processAllRecordings($hdhr);
 		$hdhrDel->deleteRecording($id,$rerecord);
-		
+
 		//refresh list of recordings
 		$hdhrRecordings = new DVRUI_Recordings($hdhr);
 		if(strlen($seriesid) > 3){
 			$hdhrRecordings->processSeriesRecordings($hdhr, $seriesid);
 		}else{
 			$hdhrRecordings->processAllRecordings($hdhr);
-		}		
+		}
 		$hdhrRecordings->sortRecordings('DD');
 
 		$numRecordings = $hdhrRecordings->getRecordingCount();
@@ -69,7 +69,7 @@
 		//get data
 		$result = ob_get_contents();
 		ob_end_clean();
-	
+
 		//display
 		$tab->add(TabInnerHtml::getBehavior("recordings_box", $htmlStr));
 		return $tab->getString();
@@ -95,6 +95,7 @@
 			$recordingsEntry = str_replace('<!-- dvr_recordings_chname -->',$hdhrRecordings->getChannelName($i),$recordingsEntry);
 			$recordingsEntry = str_replace('<!-- dvr_recordings_chnumber -->',$hdhrRecordings->getChannelNumber($i),$recordingsEntry);
 			$recordingsEntry = str_replace('<!-- dvr_recordings_chaffiliate -->',$hdhrRecordings->getChannelAffiliate($i),$recordingsEntry);
+			$recordingsEntry = str_replace('<!-- dvr_recordings_datetime -->',$hdhrRecordings->getRecordStartTimeRaw($i),$recordingsEntry);
 
 
 
@@ -105,8 +106,8 @@
 		$revealContent =  str_replace('<!-- dvr_series_id -->',$seriesid,$revealContent);
 		$recordingsList = str_replace('<!-- dvr_recordings_count -->','Found: ' . $numRecordings . ' Recordings',$recordingsList);
 		$recordingsList = str_replace('<!-- dvr_recordings_list -->',$recordingsData,$recordingsList);
-		$recordingsList .= $revealContent;	
+		$recordingsList .= $revealContent;
 		return $recordingsList;
 	}
-	
+
 ?>

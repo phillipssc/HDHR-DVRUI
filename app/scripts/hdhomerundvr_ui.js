@@ -238,9 +238,10 @@ function handleSelectArchive(selectarchive){
   }
 }
 
-function openNewCreateRuleForm(formId,handler) {
+function openNewCreateRuleForm(formId) {
   var form=document.getElementById(formId);
   var title = form.elements.title.value;
+  var handler = form.elements.handler.value;
   var subTitle = "";
   if ( handler == "recordings") {
     title = title.replace(/[:;\\\/~?<>*]/g,"");
@@ -255,7 +256,7 @@ function openNewCreateRuleForm(formId,handler) {
       subTitle = form.elements.episode.value;
     }
   }
-  openCreateRuleForm(form.elements.id.value, form.elements.series_id.value, title, subTitle, form.elements.category.value, handler);
+  openCreateRuleForm(form.elements.id.value, form.elements.series_id.value, title, subTitle, form.elements.datetime.value, form.elements.channels.value, form.elements.category.value, handler);
 }
 
 function submitRuleForm(){

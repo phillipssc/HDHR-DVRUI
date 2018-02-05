@@ -25,19 +25,19 @@ class DVRUI_Recordings {
 	private $recording_PlayURL = 'PlayURL';
 	private $recording_CmdURL = 'CmdURL';
 	private $recording_EpisodesURL = 'EpisodesURL';
-	
+
 	private $recording_ID = 'RecID';
 	private $recording_StorageID = 'StorageID';
 	private $recording_SeriesID  = 'SeriesID';
-	
+
 	private $recordings_list = array();
-	
+
 	private $recording_cmd_delete = '&cmd=delete&rerecord=0';
 	private $recording_cmd_rerecord = '&cmd=delete&rerecord=1';
-	
+
 
 	public function DVRUI_Recordings($hdhr) {
-	}	
+	}
 
 	public function processAllRecordings($hdhr) {
 		DVRUI_setTZ();
@@ -71,7 +71,7 @@ class DVRUI_Recordings {
 		DVRUI_setTZ();
 		if(strlen($categories) < 3){
 			$categories = "root";
-		}	
+		}
 		$engineCount = $hdhr->engine_count();
 		for ($i=0; $i < $engineCount; $i++) {
 			$engine = $hdhr->get_engine_storage_url($i) . "?DisplayGroupID=" . $categories;
@@ -164,7 +164,7 @@ class DVRUI_Recordings {
 		if (array_key_exists($this->recording_Title,$recording)){
 			$title = $recording[$this->recording_Title];
 		}
-		
+
 		$this->recordings[] = array(
 			$this->recording_StorageID => $storageID,
 			$this->recording_SeriesID => $seriesid,
@@ -190,7 +190,7 @@ class DVRUI_Recordings {
 			$this->recording_Title => $title,
 			$this->recording_ID => $recID);
 	}
-	
+
 	private function getRecordingIDfromURL($url) {
 		$pattern = "/.+id=(\S{8})$/";
 		if (preg_match($pattern, $url, $matches)) {
@@ -252,7 +252,7 @@ class DVRUI_Recordings {
 
 		}
 	}
-	
+
 	public function sortRecordingsByTitle(){
 		usort($this->recordings, function ($a, $b) {
 			if ($a[$this->recording_Title] == $b[$this->recording_Title]) {
@@ -263,7 +263,7 @@ class DVRUI_Recordings {
 			}
 		});
 		return;
-	}	
+	}
 
 
 	public function deleteRecording($id,$rerecord) {
@@ -277,12 +277,12 @@ class DVRUI_Recordings {
 		$this->removeID($id);
 		/* ignore the response at this tie */
 		echo('Removed ' . $id . ' : ' . $response);
-		
+
 	}
 
 	public function getUniqueSeriesID(){
 		return array_unique(array_map(function ($i) { return $i[$this->recording_SeriesID]; }, $this->recordings));
-	} 
+	}
 
 	public function getRecordingCountBySeries($ID) {
 		$count = 0;
@@ -302,7 +302,7 @@ class DVRUI_Recordings {
 		return $this->recordings[$pos][$this->recording_StorageID];
 	}
 
-	
+
 	public function getRecordingCount() {
 		return count($this->recordings);
 	}
@@ -370,7 +370,7 @@ class DVRUI_Recordings {
 			return true;
 		}
 	}
-	
+
 	public function getOriginalAirDate($pos) {
 		if ($this->recordings[$pos][$this->recording_OriginalAirDate] == '') {
 			return gmdate('D M/d Y',0);
@@ -399,6 +399,10 @@ class DVRUI_Recordings {
 		return date('D M/d Y @ g:ia',$this->recordings[$pos][$this->recording_RecordStartTime]);
 	}
 
+	public function getRecordStartTimeRaw($pos) {
+		return $this->recordings[$pos][$this->recording_RecordStartTime];
+	}
+
 	public function getRecordEndTime($pos) {
 		return date('D M/d Y @ g:ia',$this->recordings[$pos][$this->recording_RecordEndTime]);
 	}
@@ -422,6 +426,6 @@ class DVRUI_Recordings {
 	public function getRerecordCmdURL($pos) {
 		return $this->recordings[$pos][$this->recording_CmdURL] . '&cmd=delete&rerecord=1';
 	}
-	
+
 }
 ?>

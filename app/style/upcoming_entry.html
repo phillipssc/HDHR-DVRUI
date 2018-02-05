@@ -7,4 +7,22 @@
 	<p>Start: <!-- dvr_upcoming_start --></p>
 	<p>Stop: <!-- dvr_upcoming_stop --></p>
 	<p>Channel: <!-- dvr_upcoming_channels --> <!-- dvr_upcoming_channel_name --></p>
+	<form id="upcoming<!-- dvr_upcoming_id -->">
+		<input type="hidden" name="id" value="<!-- dvr_upcoming_id -->">
+		<input type="hidden" name="series_id" value="<!-- dvr_series_id -->">
+		<input type="hidden" name="title" value="<!-- dvr_upcoming_title -->">
+		<input type="hidden" name="channels" value="<!-- dvr_upcoming_channels -->">
+		<input type="hidden" name="recent" value="">
+		<input type="hidden" name="startpad" value="0">
+		<input type="hidden" name="endpad" value="0">
+		<input type="hidden" name="saveSearchString" value="<!-- dvr_upcoming_title -->">
+		<input type="hidden" name="datetime" value="<!-- dvr_upcoming_datetime -->">
+		<input type="hidden" name="airdate" value="">
+		<input type="hidden" name="category" value="<!-- dvr_upcoming_category -->">
+		<input type="hidden" name="handler" value="upcoming">
+		<p class="actions">
+			<!-- edit existing task -->
+			<a onClick="openNewCreateRuleForm('upcoming<!-- dvr_upcoming_id -->');" class='record'><img src="themes/default/gear.png" height=16></a>
+		</p>
+	</form>
 </div>

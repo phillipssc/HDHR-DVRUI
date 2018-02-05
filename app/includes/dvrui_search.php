@@ -15,19 +15,19 @@ class DVRUI_Search {
 	private $search_OriginalAirDate = 'OriginalAirdate';
 	private $search_Filter = 'Filter';
 	private $searchResults = array();
-	
+
 	private $search_list = array();
 
 	private $auth = '';
 	private $searchURL =  DVRUI_Vars::DVRUI_apiurl . "api/search?DeviceAuth=";
-	
+
 	public function DVRUI_Search($hdhr, $searchStr) {
 		DVRUI_setTZ();
 		$searchString = rawurlencode($searchStr);
 
 		//build up Auth string
 		$auth='';
-		
+
 		$devices =  $hdhr->device_count();
 		for ($i=0; $i < $devices; $i++) {
 			$auth .= $hdhr->get_device_auth($i);
@@ -45,8 +45,9 @@ class DVRUI_Search {
 			$seriesID = $search_info[$i][$this->search_SeriesID];
 			$image = "";
 			$title = $search_info[$i][$this->search_Title];
-			$originalAirDate = 0;	
-			$recordingRule = 0;	
+			$originalAirDate = 0;
+			$recordingRule = 0;
+			$searchFilter = "";
 			if (array_key_exists($this->search_ImageURL,$search_info[$i])){
 				$image = $search_info[$i][$this->search_ImageURL];
 			}
@@ -68,7 +69,7 @@ class DVRUI_Search {
 			if (array_key_exists($this->search_RecordingRule,$search_info[$i])) {
 				$recordingRule = $search_info[$i][$this->search_RecordingRule];
 			}
-			
+
 			if (array_key_exists($this->search_Filter,$search_info[$i])) {
 				$searchFilter = $search_info[$i][$this->search_Filter];
 			}
@@ -82,22 +83,22 @@ class DVRUI_Search {
 					$this->search_ChannelName => $channelName,
 					$this->search_ChannelImageURL => $channelImageURL,
 					$this->search_OriginalAirDate => $originalAirDate,
-					$this->search_RecordingRule => $recordingRule,	
-					$this->search_RecordingRule => $recordingRule,	
+					$this->search_RecordingRule => $recordingRule,
+					$this->search_RecordingRule => $recordingRule,
 					$this->search_Filter => $searchFilter
 				);
 		}
-		
+
 	}
 
 	public function getSearchResultCount() {
 		return count($this->searchResults);
 	}
-	
+
 	public function getAuth() {
 		return $this->auth;
 	}
-	
+
 	public function getSearchResultSeriesID($pos) {
 		return $this->searchResults[$pos][$this->search_SeriesID];
 	}
@@ -124,7 +125,7 @@ class DVRUI_Search {
 		return $this->searchResults[$pos][$this->search_ChannelImageURL];
 	}
 	public function getSearchResultOriginalAirDate($pos) {
-		
+
 		if($this->searchResults[$pos][$this->search_OriginalAirDate] == 0){
 			return "N/A";
 		}else{
@@ -134,7 +135,7 @@ class DVRUI_Search {
 	public function getSearchResultRecordingRules($pos) {
 		return $this->searchResults[$pos][$this->search_RecordingRule];
 	}
-	
+
 	public function getRecordRecentURL($pos) {
 		return "api.php?api=rules&cmd=create&seriesid=" . $this->searchResults[$pos][$this->search_SeriesID] . '&recentonly=1';
 	}

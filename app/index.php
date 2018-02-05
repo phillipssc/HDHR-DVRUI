@@ -18,7 +18,7 @@
 	$ajax = new TinyAjax();
 	$ajax->setRequestType("POST");    // Change request-type from GET to POST
 	$ajax->showLoading();             // Show loading while callback is in progress
-	
+
 	/* Export the PHP Interface */
 	$ajax->exportFunction("openSeriesPage","");
 	$ajax->exportFunction("openRulesPage","seriesid");
@@ -34,7 +34,7 @@
 	$ajax->exportFunction("deleteRuleFromSearch","searchstring, id");
 	$ajax->exportFunction("createQuickRuleFromSearch","searchString, seriesid, recentonly");
 	$ajax->exportFunction("createRuleFromSearch","searchString, seriesid, recentonly, start, end, channel, recordtime, recordafter");
-	$ajax->exportFunction("openCreateRuleForm", "ruleid, seriesid, seriesname, subtitle, category, handler");
+	$ajax->exportFunction("openCreateRuleForm", "ruleid, seriesid, seriesname, subtitle, datetime, channel, category, handler");
 	$ajax->exportFunction("createRulePostProcess","handler, seriestitle, seriessubtitle, seriesid, recentonly, start, end, channel, recordtime, recordafter, comskip, archive, delete, rebuild, ffmpeg");
 	$ajax->exportFunction("getServerStats","");
 	/* GO */
@@ -42,7 +42,7 @@
 
 	// Apply default Theme */
 	$stylesheet = getTheme();
-	
+
 	//Build navigation menu for pages
 	$pageTitles = array('Series','Rules', 'Recordings', 'Upcoming', 'Search','.');
 	$pageNames = array('series_page', 'rules_page', 'recordings_page', 'upcoming_page', 'search_page', 'settings_page');
@@ -54,7 +54,7 @@
 		$menuEntries .= $menuEntry;
 	}
 	$menu_data = str_replace('<!-- dvrui_pagemenu_entries-->',$menuEntries,$menu_data);
-	
+
 	// --- Build Page Here ---
 	$pageName = DVRUI_Vars::DVRUI_name;
 	$UIVersion = "version " . DVRUI_Vars::DVRUI_version;
@@ -94,4 +94,3 @@
 	$pagecontent .= $footer;
 	echo($pagecontent);
 ?>
-

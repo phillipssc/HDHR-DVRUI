@@ -1,12 +1,14 @@
 <div id='<!-- dvr_rules_id -->' class='rule_entry'>
 	<img src='<!-- dvr_rules_image -->' class='series_img'/>
 	<span class='rule_info'><h4><!-- dvr_rules_title --></h4></span>
-	<p><!-- dvr_rules_synopsis --></p>
+	<p class="synopsis"><!-- dvr_rules_synopsis --></p>
 	<p>Genre: <!-- dvr_rules_filterTags --></p>
 	<p>Priority: <!-- dvr_rules_priority --> Start: <!-- dvr_rules_startpad --> End: <!-- dvr_rules_endpad --></p>
 	<p>Channel: <!-- dvr_rules_channels --></p>
 	<p>Schedule: <!-- dvr_rules_recent --> <!-- dvr_rules_airdate --> <!-- dvr_rules_datetime --></p>
 	<p>Recordings: <!-- dvr_reccount --></p>
+	<p>Comskip Profile: <!-- dvr_comskip_option --></p>
+	<p class="archivesettings"><!-- dvr_ffmpeg_option --></p>
 	<a onClick="viewUpcomingFromRule('<!-- dvr_series_id -->')" class="upcoming"><!-- dvr_series_upcoming --></a>
 	<!-- task creation variables -->
 	<form id="task<!-- dvr_rules_id -->">
@@ -21,11 +23,12 @@
 		<input type="hidden" name="datetime" value="<!-- dvr_rules_datetime -->">
 		<input type="hidden" name="airdate" value="<!-- dvr_rules_airdate -->">
 		<input type="hidden" name="category" value="<!-- dvr_rules_category -->">
+		<input type="hidden" name="handler" value="rules">
 		<p class="actions">
 			<a onClick="changeRulePriority('<!-- dvr_rules_id -->', <!-- dvr_rules_priorityMinus -->);" class="play"><img src="images/down.png" height=16></a>
 			<a onClick="changeRulePriority('<!-- dvr_rules_id -->', <!-- dvr_rules_priorityPlus -->);" class="play"><img src="images/up.png" height=16></a>
 			<!-- edit existing task -->
-			<a onClick="openNewCreateRuleForm('task<!-- dvr_rules_id -->','rules');" class='record'><img src="themes/default/gear.png" height=16></a>
+			<a onClick="openNewCreateRuleForm('task<!-- dvr_rules_id -->');" class='record'><img src="themes/default/gear.png" height=16></a>
 			<a onClick="RuleDeleteReveal(event,'<!-- dvr_rules_id -->');" class="delete"><img src="images/delete.png" height=16></a>
 		</p>
 	</form>
