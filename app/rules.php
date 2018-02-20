@@ -123,9 +123,21 @@
 				$rulesEntry = str_replace('<!-- dvr_rules_datetime -->',", Record Time: " . $hdhrRules->getRuleDateTime($i),$rulesEntry);
 			}
 
-			$rulesEntry = str_replace('<!-- dvr_comskip_option -->', getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "comskip"), $rulesEntry);
+			$deleTe = getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "delete");
+			$rebuild = getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "rebuild");
+			$ffmpegopts = "FFmpeg Config: ";
+			$ffmpegopts .= getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "ffmpeg");
+			if ( $deleTe == 'Y' || $rebuild == 'Y' ) $ffmpegopts .= " (";
+			if ( $rebuild == 'Y') $ffmpegopts .= "Ovr";
+			if ( $deleTe == 'Y' && $rebuild == 'Y' ) $ffmpegopts .= ",";
+			if ( $deleTe == 'Y') $ffmpegopts .= "Del";
+			if ( $deleTe == 'Y' || $rebuild == 'Y' ) $ffmpegopts .= ")";
+			$comskipopts = getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "comskip");
+			if ( $hdhrRules->getRuleFilter($i)[0] == "Sports" ) $comskipopts = "<b>[Sports]</b>".$comskipopts;
+			if ( $hdhrRules->getRuleFilter($i)[0] == "Movies" ) $comskipopts = "<b>[Movies]</b>".$comskipopts;
+			$rulesEntry = str_replace('<!-- dvr_comskip_option -->', $comskipopts, $rulesEntry);
 		  if ( getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "archive") == 'Y' ) {
-		    $rulesEntry = str_replace('<!-- dvr_ffmpeg_option -->', "FFmpeg Config: ". getPostProcessTriggerData($hdhrRules->getRuleSeriesID($i), $hdhrRules->getRuleTitle($i), $hdhrRules->getRuleFilter($i)[0], "ffmpeg"), $rulesEntry);
+		    $rulesEntry = str_replace('<!-- dvr_ffmpeg_option -->', $ffmpegopts, $rulesEntry);
 		  }
 
 			// get upcoming count

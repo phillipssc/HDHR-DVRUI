@@ -86,3 +86,9 @@ if [ ! -f "$1" ]; then
   echo No input file or file does not exist.
   exit 3
 fi
+
+echo "./postprocessname.py \"${fnam}\" directory"
+dirname=$(./postprocessname.py "${fnam}" directory)
+echo "mkdir -p \"${plex_dir}TV Shows/$dirname\""
+newname=$(./postprocessname.py "${fnam}" filename)
+echo "cp \"${fnam}.mp4\" \"${plex_dir}TV Shows/${newname}.mp4\"" | tee -a "${temp_dir}${fbas}.log"

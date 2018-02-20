@@ -8,7 +8,7 @@
 # iwatch -c "processvideo %f" -e close_write /home/sean/HDHomeRun/
 
 # tee without -a creates the log new
-echo "$0 \"$1\" $2 $3 $4 \"$5\" \"$6\"" | tee -a "${temp_dir}conversions.log"
+echo "$0 \"$1\" $2 $3 $4 \"$5\" \"$6\"" >> "${temp_dir}conversions.log"
 
 #process args
 # defaults
@@ -54,13 +54,13 @@ done
 # gather info about the filename
 fbas=$(basename -s .mpg "$1")
 if [[ $fbas =~ (.*)[[:space:]](S[[:digit:]][[:digit:]])(E[[:digit:]][[:digit:]])(.*) ]]; then
-  echo ${BASH_REMATCH[1]};
+  #echo ${BASH_REMATCH[1]};
   fcrc="${BASH_REMATCH[1]} ${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
   fnam=${fcrc}
   fdir=$(dirname "$1")
 else
   if [[ $fbas =~ (.*)[[:space:]]([[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]])[[:space:]].* ]]; then
-    echo ${BASH_REMATCH[1]};
+    #echo ${BASH_REMATCH[1]};
     fcrc="${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
     fnam=${BASH_REMATCH[1]}
     fdir=$(dirname "$1")
@@ -93,9 +93,9 @@ i=0
 while true; do
   varname="comskip_ini_${i}_label"
   if [ "${!varname}" != "" ]; then
-    echo "label =  ${!varname}"
+    #echo "label =  ${!varname}"
     varval="comskip_ini_${i}"
-    echo "value =  ${!varname}"
+    #echo "value =  ${!varname}"
     if [ "${!varname}" == "$comskip" ]; then
       comskipini=${!varval}
     fi
@@ -112,9 +112,9 @@ i=0
 while true; do
   varname="ffmpeg_conf_${i}_label"
   if [ "${!varname}" != "" ]; then
-    echo "label =  ${!varname}"
+    #echo "label =  ${!varname}"
     varval="ffmpeg_conf_${i}"
-    echo "value =  ${!varval}"
+    #echo "value =  ${!varval}"
     if [ "${!varname}" == "$ffmpeg" ]; then
       ffmpegcfg=${!varval}
     fi
@@ -210,21 +210,24 @@ fi
 plex_archive_dir=0
 if [[ -f "${fnam}.mp4" ]]; then
   if [[ "$1" =~ "/Movies/" ]]; then
-    echo manual rename movie | tee -a "${temp_dir}${fbas}.log"
+    echo rename movie | tee -a "${temp_dir}${fbas}.log"
     plex_archive_dir=1
     mkdir -p "${plex_dir}Movies/${fnam}" 2>&1 | tee -a "${temp_dir}${fbas}.log"
     echo "Copying file to ${plex_dir}Movies/${fnam}/${fnam}.mp4" | tee -a "${temp_dir}${fbas}.log"
     cp "${temp_dir}${crc}/${fnam}.mp4" "${plex_dir}Movies/${fnam}/${fnam}.mp4"
   else
-    echo tvnamer | tee -a "${temp_dir}${fbas}.log"
+    echo rename tv | tee -a "${temp_dir}${fbas}.log"
     plex_archive_dir=2
-    if [[ "$rebuild" == "Y" ]]; then
-      eval "${tvnamer_app} -b -m --force-move -d \"${plex_dir}TV/%(seriesname)s/Season %(seasonnumber)d\" \"${fnam}.mp4\"" 2>&1 | tee -a "${temp_dir}${fbas}.log"
-    else
-      eval "${tvnamer_app} -b -m -d \"${plex_dir}TV/%(seriesname)s/Season %(seasonnumber)d\" \"${fnam}.mp4\"" 2>&1 | tee -a "${temp_dir}${fbas}.log"
-    fi
+
+    dirname=$(/usr/bin/postprocessname.py "${fnam}" directory)
+    #echo "dirname: ${plex_dir}TV Shows/$dirname"
+    mkdir -p "${plex_dir}TV Shows/$dirname"
+    newname=$(/usr/bin/postprocessname.py "${fnam}" filename)
+    echo "cp \"${fnam}.mp4\" \"${plex_dir}TV Shows/${newname}.mp4\"" | tee -a "${temp_dir}${fbas}.log"
+    cp "${fnam}.mp4" "${plex_dir}TV Shows/${newname}.mp4"
+
     if [ $? -eq 0 ]; then
-      echo echo "file renamed" | tee -a "${temp_dir}${fbas}.log"
+      echo "file renamed" | tee -a "${temp_dir}${fbas}.log"
     else
       echo "rename failed" | tee -a "${temp_dir}${fbas}.log"
       /bin/ls -l  | tee -a "${temp_dir}${fbas}.log"
