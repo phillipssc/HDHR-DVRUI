@@ -60,7 +60,7 @@ The UI has been modified to allow for post processing of the video content inclu
     sudo crontab -e
     #add the following to the bottom and save:
     0,30 * * * * /usr/bin/postprocessclean.sh
-    &ast;/5 * * * * /usr/bin/postprocesswatch.sh
+    */5 * * * * /usr/bin/postprocesswatch.sh
 
     # update the settings
     sudo nano /etc/postprocess.conf
