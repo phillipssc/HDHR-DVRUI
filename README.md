@@ -9,30 +9,30 @@ The UI has been modified to allow for post processing of the video content inclu
 
 ### After a base installation of Ubuntu Server I ran the following:
 
-# install file monotoring [iWatch](http://iwatch.sourceforge.net/index.html) (not Apple)
+### install file monotoring [iWatch](http://iwatch.sourceforge.net/index.html) (not Apple)
     wget http://ftp.debian.org/debian/pool/main/i/iwatch/iwatch_0.2.2-5_all.deb
     sudo dpkg -i iwatch_0.2.2-5_all.deb
     sudo apt-get install -f
 
-# install commercial removal: [comskip](http://www.kaashoek.com/comskip/)
+### install commercial removal: [comskip](http://www.kaashoek.com/comskip/)
     git clone git://github.com/erikkaashoek/Comskip
     cd Comskip
     ./autogen.sh
     ./configure
     make
 
-# install transcoding: [FFmpeg](https://www.ffmpeg.org/)
+### install transcoding: [FFmpeg](https://www.ffmpeg.org/)
     sudo add-apt-repository ppa:mc3man/trusty-media
     sudo apt-get install ffmpeg
 
-# install file renaming for Plex to get episode title: [Python/PyQuery](https://pythonhosted.org/pyquery/)
+### install file renaming for Plex to get episode title: [Python/PyQuery](https://pythonhosted.org/pyquery/)
     sudo apt-get install libxml2-dev libxslt1-dev python-dev
     sudo pip install pyquery
 
-# install apache
+### install apache
     sudo apt-get install apache2
 
-# install HDHR-DVRUI to the Apache directory
+### install HDHR-DVRUI to the Apache directory
     git clone git://github.com/phillipssc/HDHR-DVRUI.git
     sudo cp HDHR-DVRUI/app/bin/postprocess.sh /usr/bin/
     sudo cp HDHR-DVRUI/app/bin/postprocessclean.sh /usr/bin/
@@ -43,7 +43,7 @@ The UI has been modified to allow for post processing of the video content inclu
     sudo cp HDHR-DVRUI/app/index.html /var/www/html/
     sudo mv HDHR-DVRUI /var/www/html/
 
-# grant permissions to the web client
+### grant permissions to the web client
     sudo visudo
     #add the following to the bottom and save:
     www-data        LOCAL=NOPASSWD:/usr/sbin/service
@@ -56,13 +56,13 @@ The UI has been modified to allow for post processing of the video content inclu
     www-data        LOCAL=NOPASSWD:/usr/bin/postprocessvars.sh
     www-data        LOCAL=NOPASSWD:/usr/bin/postprocess.sh
 
-# set up the background tasks
+### set up the background tasks
     sudo crontab -e
     #add the following to the bottom and save:
     0,30 * * * * /usr/bin/postprocessclean.sh
     */5 * * * * /usr/bin/postprocesswatch.sh
 
-# update the settings
+### update the settings
     sudo nano /etc/postprocess.conf
     #You will need to update the Plex values with those from your own server.   The best way that I have found to get the token value is to use your browser to inspect the "scan" icon on any of the plex screens
 
