@@ -219,10 +219,10 @@ if [[ -f "${fnam}.mp4" ]]; then
     echo rename tv | tee -a "${temp_dir}${fbas}.log"
     plex_archive_dir=2
 
-    dirname=$(/usr/bin/postprocessname.py "${fnam}" directory)
+    newname=$(/usr/bin/postprocessname.py "${fnam}")
+    dirname=$(dirname "${newname}")
     #echo "dirname: ${plex_dir}TV Shows/$dirname"
     mkdir -p "${plex_dir}TV Shows/$dirname"
-    newname=$(/usr/bin/postprocessname.py "${fnam}" filename)
     echo "cp \"${fnam}.mp4\" \"${plex_dir}TV Shows/${newname}.mp4\"" | tee -a "${temp_dir}${fbas}.log"
     cp "${fnam}.mp4" "${plex_dir}TV Shows/${newname}.mp4"
 

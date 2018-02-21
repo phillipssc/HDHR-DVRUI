@@ -1,30 +1,72 @@
-# *HDHR-DVRUI*
+# *HDHR-DVRUI+*
 PHP Server Application for managing your home networks HDHomeRun DVR(s) from SiliconDust including post-processing and enhanced scheduling
 
-![Edit Rule](HDHomeRun_DVR_UI_EditRule.png) 
+![Advanced Rule](HDHomeRun_DVR_UI_EditRule.png)
 
 This fork was done to make changes specific to the fine app by [demonrik](https://github.com/demonrik) and [avandeputte](https://github.com/avandeputte) that fell outside of the scope of the original project.
 My setup uses a powerful Ubuntu server (8 core Xeon 2 GB VM) to record, post-process, archive to a NAS and notify Plex of the new video.
 The UI has been modified to allow for post processing of the video content including commercial removal, archiving, transcoding and cleanup of the incoming video content.
-The following was installed to accomodate this functionality:
 
-To monitor the file system and trigger a script when a file opened for writing has closed: iWatch (not Apple)
-http://iwatch.sourceforge.net/index.html
+## After a base installation of Ubuntu Server I ran the following:
 
-Commercial removal: comskip
-http://www.kaashoek.com/comskip/
+    # install file monotoring [iWatch](http://iwatch.sourceforge.net/index.html) (not Apple)
+    wget http://ftp.debian.org/debian/pool/main/i/iwatch/iwatch_0.2.2-5_all.deb
+    sudo dpkg -i iwatch_0.2.2-5_all.deb
+    sudo apt-get install -f
 
-Transcoding: FFmpeg
-https://www.ffmpeg.org/
+    # install commercial removal: [comskip](http://www.kaashoek.com/comskip/)
+    git clone git://github.com/erikkaashoek/Comskip
+    cd Comskip
+    ./autogen.sh
+    ./configure
+    make
 
-File renaming for Plex: tvnamer
-https://github.com/dbr/tvnamer
+    # install transcoding: [FFmpeg](https://www.ffmpeg.org/)
+    sudo add-apt-repository ppa:mc3man/trusty-media
+    sudo apt-get install ffmpeg
 
-Notification for Plex: wget
+    # install file renaming for Plex to get episode title: [Python/PyQuery](https://pythonhosted.org/pyquery/)
+    sudo apt-get install libxml2-dev libxslt1-dev python-dev
+    sudo pip install pyquery
 
-Four script files in app/bin are to be placed in /usr/bin and the configuration file (postprocess.conf) in /etc
+    # install apache
+    sudo apt-get install apache2
 
-I rotate my local recordings using the postprocessclean.sh routine run every half hour by cron.   The script deletes videos older than a week, if I want to keep them longer I acrchive them.
+    # install HDHR-DVRUI to the Apache directory
+    git clone git://github.com/phillipssc/HDHR-DVRUI.git
+    sudo cp HDHR-DVRUI/app/bin/postprocess.sh /usr/bin/
+    sudo cp HDHR-DVRUI/app/bin/postprocessclean.sh /usr/bin/
+    sudo cp HDHR-DVRUI/app/bin/postprocessvars.sh /usr/bin/
+    sudo cp HDHR-DVRUI/app/bin/postprocesswatch.sh /usr/bin/
+    sudo cp HDHR-DVRUI/app/bin/postprocessname.py /usr/bin/
+    sudo cp HDHR-DVRUI/app/cfg/postprocess.conf /etc/
+    sudo cp HDHR-DVRUI/app/index.html /var/www/html/
+    sudo mv HDHR-DVRUI /var/www/html/
+
+    # grant permissions to the web client
+    sudo visudo
+    #add the following to the bottom and save:
+    www-data        LOCAL=NOPASSWD:/usr/sbin/service
+    www-data        LOCAL=NOPASSWD:/bin/mkdir
+    www-data        LOCAL=NOPASSWD:/usr/bin/nohup
+    www-data        LOCAL=NOPASSWD:/usr/bin/setsid
+    www-data        LOCAL=NOPASSWD:/bin/bash
+    www-data        LOCAL=NOPASSWD:/bin/df
+    www-data        LOCAL=NOPASSWD:/usr/bin/uptime
+    www-data        LOCAL=NOPASSWD:/usr/bin/postprocessvars.sh
+    www-data        LOCAL=NOPASSWD:/usr/bin/postprocess.sh
+
+    # set up the background tasks
+    sudo crontab -e
+    #add the following to the bottom and save:
+    0,30 * * * * /usr/bin/postprocessclean.sh
+    \*/5 * * * * /usr/bin/postprocesswatch.sh
+
+    # update the settings
+    sudo nano /etc/postprocess.conf
+    #You will need to update the Plex values with those from your own server.   The best way that I have found to get the token value is to use your browser to inspect the "scan" icon on any of the plex screens
+
+I rotate my local recordings using the postprocessclean.sh routine run every half hour by cron.   The script deletes videos older than a week, if I want to keep them longer I archive them.
 The postprocesswatch.sh script watches for and kills hung ffmpeg processes.   It is configurable through /etc/postprocess.conf
 The postprocessvars.sh script is used by the web application to read variables from /etc/postprocess.conf.
 The postprocess.sh script is the workhorse that does the post-processing.
